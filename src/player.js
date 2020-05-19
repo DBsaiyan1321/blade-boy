@@ -1,7 +1,7 @@
 import Controller from "./controller";
 
 export default class Player { 
-    constructor() { 
+    constructor(maxHeight, maxWidth) { 
         this.height = 32;
         this.jumping = true;
         this.width = 10;
@@ -9,6 +9,11 @@ export default class Player {
         this.velocityX = 0;
         this.y = 0; 
         this.velocityY = 0;
+        this.maxX = maxWidth;
+        this.maxY = maxHeight;
+
+        console.log(this.maxX)
+        console.log(this.maxY)
 
         this.controller = new Controller()
         this.loop = this.loop.bind(this);
@@ -21,31 +26,31 @@ export default class Player {
         }
 
         if (this.controller.left) { 
-            this.velocityX -= 0.5; // If I just set it equal, it won't ease in
+            this.velocityX -= 1; // If I just set it equal, it won't ease in
         }
 
         if (this.controller.right) {
-            this.velocityX += 0.5;
+            this.velocityX += 1;
         }
 
-        this.velocityY += 1.5; // gravity
+        this.velocityY += 0.7; // gravity
         this.x += this.velocityX;
         this.y += this.velocityY;
-        this.velocityX *= 0.9 // friction
+        this.velocityX *= 0.8 // friction
         this.velocityY *= 0.9 // friction
 
         // if the player is falling below the floor line
-        if (this.y > 180 - 16 - 32) { 
+        if (this.y > this.maxY - this.height) { 
             this.jumping = false; 
-            this.y = 180 - 16 - 32; 
+            this.y = this.maxY - this.height; 
             this.velocityY = 0;
         }
 
         // if the player is going off of the screen to the left 
-        if (this.x < -32) { 
-            this.x = 320;
-        } else if (this.x > 320) { 
-            this.x = -32;
+        if (this.x < 0) { 
+            this.x = 0;
+        } else if (this.x > this.maxX - this.width) { 
+            this.x = this.maxX - this.width;
         }
     }
 

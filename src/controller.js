@@ -12,6 +12,14 @@ export default class Controller {
 
     inputHandler(event) { 
         let keyState = (event.type == "keydown") ? true : false 
+        
+        if (event.keyCode === 65) { 
+            this.left = keyState;
+        } else if (event.keyCode === 68) { 
+            this.right = keyState;
+        } else if (event.keyCode === 87) { 
+            this.up = keyState;
+        }
         // switch(event.keyCode) { 
         //     case 65:
         //         this.left = keyState;
@@ -22,12 +30,5 @@ export default class Controller {
         //     default:
         //         break;
         // } 
-        if (event.keyCode === 65) { 
-            this.left = keyState;
-        } else if (event.keyCode === 68) { 
-            this.right = keyState;
-        } else if (event.keyCode === 87) { 
-            this.up = keyState;
-        }
     }
 }
