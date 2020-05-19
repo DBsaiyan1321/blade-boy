@@ -9,7 +9,8 @@ export default class Platform {
     }
 
     draw(ctx) { 
-        ctx.fillStyle = "purple";
-        ctx.fillRect(this.x, this.y, this.width, this.height)
+        ctx.fillStyle = "black";
+        // ctx.fillRect(this.x, this.y, this.width, this.height)
+        ctx.fillRect(200, 400, this.width, this.height)
     }
 }

@@ -9,6 +9,7 @@ export default class Player {
         this.velocityX = 0;
         this.y = 0; 
         this.velocityY = 0;
+        this.facing = "right"
         this.maxX = maxWidth;
         this.maxY = maxHeight;
 
@@ -19,7 +20,7 @@ export default class Player {
         this.loop = this.loop.bind(this);
     }
 
-    loop() { 
+    loop(ctx) { 
         if (this.controller.up && !this.jumping) { 
             this.velocityY -= 20;
             this.jumping = true;
@@ -27,10 +28,16 @@ export default class Player {
 
         if (this.controller.left) { 
             this.velocityX -= 1; // If I just set it equal, it won't ease in
+            this.facing = "left";
         }
 
         if (this.controller.right) {
             this.velocityX += 1;
+            this.facing = "right";
+        }
+
+        if (this.controller.space) { 
+            this.attack(ctx);
         }
 
         this.velocityY += 0.7; // gravity
@@ -57,6 +64,15 @@ export default class Player {
     draw(ctx) {
         ctx.fillStyle = "red";
         ctx.fillRect(this.x, this.y, this.width, this.height)
+    }
+
+    attack(ctx) { 
+        ctx.fillStyle = "blue";
+        if (this.facing === "left") { 
+            ctx.fillRect(this.x, this.y, -20, this.height)
+        } else if (this.facing === "right") { 
+            ctx.fillRect(this.x + this.width, this.y, 20, this.height)
+        }
     }
 }
 

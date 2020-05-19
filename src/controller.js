@@ -3,6 +3,7 @@ export default class Controller {
         this.left = false;
         this.right = false; 
         this.up = false; 
+        this.space = false;
 
         this.inputHandler = this.inputHandler.bind(this);
 
@@ -19,16 +20,8 @@ export default class Controller {
             this.right = keyState;
         } else if (event.keyCode === 87) { 
             this.up = keyState;
+        } else if (event.keyCode === 32) { 
+            this.space = keyState;
         }
-        // switch(event.keyCode) { 
-        //     case 65:
-        //         this.left = keyState;
-        //     case 68:
-        //         this.right = keyState;
-        //     case 87: 
-        //         this.up = keyState;
-        //     default:
-        //         break;
-        // } 
     }
 }
