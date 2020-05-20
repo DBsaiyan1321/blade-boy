@@ -9,8 +9,8 @@ export default class BladeBoy {
         this.height = canvas.height
         this.width = canvas.width
         
-        this.player = new Player(this.height, this.width);
         this.platform = new Platform(this.height, this.width);
+        this.player = new Player(this.height, this.width, this.platform);
 
         this.gameLoop = this.gameLoop.bind(this);
         this.gameLoop()
@@ -20,22 +20,16 @@ export default class BladeBoy {
         let deltaTime = timeStamp - this.lastTime
         this.lastTime = timeStamp
 
-        // this.ctx.clearRect(0, 0, this.dimensions.width, this.dimensions.height);
+        // this.ctx.clearRect(0, 0, this.dimensions.width, this.dimensions.height); // For some reason this breaks the background
         this.drawBackground(this.ctx)
         this.player.loop(this.ctx)
         this.player.draw(this.ctx)
         this.platform.draw(this.ctx)
-    
-        // console.log("hey")
-        // if (this.getDistance(this.player, this.platform) < )
 
         requestAnimationFrame(this.gameLoop)
     }
 
     drawBackground(ctx) {
-        // ctx.fillStyle = "skyblue";
-        // ctx.fillRect(0, 0, this.dimensions.width, this.dimensions.height);
-        // ctx.drawImage(this.backgroundImg, 0, 0, this.dimensions.width, this.dimensions.height) // Doesn't work rn
         this.backgroundImg = new Image();
         this.backgroundImg.src = "../assets/background_glacial_mountains.png";
         this.backgroundImg.onload = () => {
