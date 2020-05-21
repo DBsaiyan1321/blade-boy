@@ -111,7 +111,7 @@ export default class Player {
         // ctx.fillRect(this.x, this.y, this.width, this.height)
         // console.log(this.width, this.height)
         this.playerImg = new Image();
-        this.playerImg.src = "../assets/adventurer-v1.5-Sheet.png"
+        this.playerImg.src = "./assets/adventurer-v1.5-Sheet.png"
         this.playerImg.onload = () => {
             ctx.drawImage(this.playerImg, 13, 0, 20, 37, this.x, this.y, this.width, this.height);
         }

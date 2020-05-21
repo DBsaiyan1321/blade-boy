@@ -53,7 +53,7 @@ export default class BladeBoy {
 
     drawBackground(ctx) {
         this.backgroundImg = new Image();
-        this.backgroundImg.src = "../assets/background_glacial_mountains.png";
+        this.backgroundImg.src = "./assets/background_glacial_mountains.png";
         this.backgroundImg.onload = () => {
             this.ctx.drawImage(this.backgroundImg, 0, 0, this.dimensions.width, this.dimensions.height);
             // this.ctx.beginPath();
