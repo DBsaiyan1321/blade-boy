@@ -15,8 +15,13 @@ export default class Platform {
     }
 
     draw(ctx) { 
-        ctx.fillStyle = "black";
+        // ctx.fillStyle = "black";
+        // // ctx.fillRect(this.x, this.y, this.width, this.height)
         // ctx.fillRect(this.x, this.y, this.width, this.height)
-        ctx.fillRect(this.x, this.y, this.width, this.height)
+        this.platformImg = new Image();
+        this.platformImg.src = "../assets/Tilemap.png";
+        this.platformImg.onload = () => {
+            ctx.drawImage(this.platformImg, 0, 0, 8, 8, this.x, this.y, this.width, this.height)
+        }
     }
 }
