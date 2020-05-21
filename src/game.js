@@ -2,15 +2,22 @@ import Player from "./player";
 import Platform from "./platform";
 
 export default class BladeBoy { 
-    constructor(canvas) { 
+    constructor(canvas, sound) { 
         this.ctx = canvas.getContext("2d");
         this.dimensions = { width: canvas.width, height: canvas.height }
         this.lastTime = 0;
         this.height = canvas.height
         this.width = canvas.width
+        this.sound = sound;
+        this.soundFlag = true;
         
-        this.platform = new Platform(this.height, this.width);
-        this.player = new Player(this.height, this.width, this.platform);
+        this.platforms = [
+            // x, y, width, height
+            new Platform(200, 425, 100, 25, this.height, this.width),
+            new Platform(350, 425, 100, 25, this.height, this.width),
+            new Platform(100, 475, 100, 25, this.height, this.width) // There is a bug with this one. Figure it out
+        ];
+        this.player = new Player(this.height, this.width, this.platforms);
 
         this.gameLoop = this.gameLoop.bind(this);
         this.gameLoop()
@@ -24,7 +31,17 @@ export default class BladeBoy {
         this.drawBackground(this.ctx)
         this.player.loop(this.ctx)
         this.player.draw(this.ctx)
-        this.platform.draw(this.ctx)
+        for (let i = 0; i < this.platforms.length; i++) { 
+            let platform = this.platforms[i]
+            platform.draw(this.ctx)
+        }
+
+        // if (this.soundFlag) { 
+        //     this.sound.play();
+        //     this.sound.volume = 0.25;
+        // }
+
+        this.drawMuteButton(this.ctx)
 
         requestAnimationFrame(this.gameLoop)
     }
@@ -34,8 +51,13 @@ export default class BladeBoy {
         this.backgroundImg.src = "../assets/background_glacial_mountains.png";
         this.backgroundImg.onload = () => {
             this.ctx.drawImage(this.backgroundImg, 0, 0, this.dimensions.width, this.dimensions.height);
-            this.ctx.beginPath();
+            // this.ctx.beginPath();
         }
+    }
+
+    drawMuteButton(ctx) { 
+        ctx.fillStyle = "black"
+        ctx.fillRect(0,0,10,10)
     }
 
     getDistance(obj1, obj2) { // Pythagorean Theroem

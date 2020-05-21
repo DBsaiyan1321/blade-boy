@@ -1,9 +1,11 @@
 import Controller from "./controller";
 
 export default class Player { 
-    constructor(maxHeight, maxWidth, platform) { 
+    constructor(maxHeight, maxWidth, platforms, ctx) { 
         this.height = 32;
         this.width = 10;
+        // this.height = 100;
+        // this.width = 100;
 
         this.x = 144; // Left
         this.velocityX = 0;
@@ -21,7 +23,7 @@ export default class Player {
 
         this.maxX = maxWidth;
         this.maxY = maxHeight;
-        this.platform = platform // When I have more platforms, the game is going to pass in an array of them
+        this.platforms = platforms // When I have more platforms, the game is going to pass in an array of them
 
         this.jumping = true;
         
@@ -34,6 +36,7 @@ export default class Player {
         this.collidedWith = this.collidedWith.bind(this)
         this.setBottom = this.setBottom.bind(this)
         this.setRight = this.setRight.bind(this)
+        this.draw = this.draw.bind(this);
     }
 
     loop(ctx) { 
@@ -93,7 +96,8 @@ export default class Player {
             this.attackFrame += 1
         }
 
-        this.collidedWith(this.platform)
+        // Checking if I'm hitting a platform
+        this.collidedWith(this.platforms)
 
         // Set the old dimensions to the current dimensions
         this.ol = this.x;
@@ -103,8 +107,14 @@ export default class Player {
     }
 
     draw(ctx) {
-        ctx.fillStyle = "red";
-        ctx.fillRect(this.x, this.y, this.width, this.height)
+        // ctx.fillStyle = "red";
+        // ctx.fillRect(this.x, this.y, this.width, this.height)
+        // console.log(this.width, this.height)
+        this.playerImg = new Image();
+        this.playerImg.src = "../assets/adventurer-v1.5-Sheet.png"
+        this.playerImg.onload = () => {
+            ctx.drawImage(this.playerImg, 13, 0, 20, 37, this.x, this.y, this.width, this.height);
+        }
     }
 
     attack(ctx) {
@@ -124,20 +134,26 @@ export default class Player {
         this.right = this.x + this.width
     }
 
-    collidedWith(platform) { 
-        // I don't understand this line, but I understand everything else
-        if (this.y > platform.bottom || this.bottom < platform.y || this.x > platform.right || this.right < platform.x) return;
+    collidedWith(platforms) { 
+        for (let i = 0; i < platforms.length; i++) { 
+            let platform = platforms[i];
 
-        if (this.y <= platform.bottom && this.ot >= platform.bottom) {
-            this.y = platform.bottom
-        } else if (this.bottom >= platform.y && this.ob <= platform.y) {
-            this.y = platform.y - this.height;
-            this.velocityY = 0; // Set the gravity to 0, or else it will look like the player is stuttering
-            this.jumping = false;
-        } else if (this.x <= platform.right && this.ol >= platform.right) { 
-            this.x = platform.right
-        } else if (this.right >= platform.x && this.or <= platform.x) { 
-            this.x = platform.x - this.width;
+            // I don't understand this line, but I understand everything else
+            if (this.y > platform.bottom || this.bottom < platform.y || this.x > platform.right || this.right < platform.x) continue;
+
+            if (this.y <= platform.bottom && this.ot >= platform.bottom) {
+                this.y = platform.bottom
+                this.velocityY = 0;
+            } else if (this.bottom >= platform.y && this.ob <= platform.y) {
+                this.y = platform.y - this.height;
+                this.velocityY = 0; // Set the gravity to 0, or else it will look like the player is stuttering
+                this.jumping = false;
+            } else if (this.x <= platform.right && this.ol >= platform.right) {
+                this.x = platform.right
+            } else if (this.right >= platform.x && this.or <= platform.x) {
+                this.x = platform.x - this.width;
+                // this.right = this.x; // Prevents it from stuttering, but gets stuck to the wall. I already tried setting velocityX to 0 too.
+            }
         }
     }
 }
