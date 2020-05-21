@@ -2,20 +2,25 @@ import Player from "./player";
 import Platform from "./platform";
 
 export default class BladeBoy { 
-    constructor(canvas, sound) { 
+    constructor(canvas, sound, muteButton) { 
         this.ctx = canvas.getContext("2d");
         this.dimensions = { width: canvas.width, height: canvas.height }
         this.lastTime = 0;
         this.height = canvas.height
         this.width = canvas.width
+
+        this.muteButton = muteButton;
         this.sound = sound;
         this.soundFlag = true;
+        this.muteButton.addEventListener("click", () => { 
+            this.musicHandler()
+        })
         
         this.platforms = [
             // x, y, width, height
             new Platform(200, 425, 100, 25, this.height, this.width),
             new Platform(350, 425, 100, 25, this.height, this.width),
-            new Platform(100, 475, 100, 25, this.height, this.width) // There is a bug with this one. Figure it out
+            new Platform(100, 475, 100, 25, this.height, this.width) 
         ];
         this.player = new Player(this.height, this.width, this.platforms);
 
@@ -36,12 +41,12 @@ export default class BladeBoy {
             platform.draw(this.ctx)
         }
 
-        // if (this.soundFlag) { 
-        //     this.sound.play();
-        //     this.sound.volume = 0.25;
-        // }
-
-        this.drawMuteButton(this.ctx)
+        if (this.soundFlag) { 
+            this.sound.play();
+            this.sound.volume = 0.25;
+        } else if (!this.soundFlag) { 
+            this.sound.pause();
+        }
 
         requestAnimationFrame(this.gameLoop)
     }
@@ -55,9 +60,12 @@ export default class BladeBoy {
         }
     }
 
-    drawMuteButton(ctx) { 
-        ctx.fillStyle = "black"
-        ctx.fillRect(0,0,10,10)
+    musicHandler() { 
+        if (this.soundFlag) { 
+            this.soundFlag = false;
+        } else if (!this.soundFlag) { 
+            this.soundFlag = true
+        }
     }
 
     getDistance(obj1, obj2) { // Pythagorean Theroem

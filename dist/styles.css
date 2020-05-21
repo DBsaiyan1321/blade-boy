@@ -46,9 +46,10 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
-
 /* End of Reset File */
 
+
+/* My CSS */
 .whole-page { 
     background-color: #180046;
     height: 100vh;
@@ -64,6 +65,17 @@ table {
     /* font-family: 'Press Start 2P', cursive; */
     font-family: 'Audiowide', cursive;
     font-size: 48px;
+}
+
+#game-screen { 
+    height: fit-content;
+    width: fit-content;
+    position: relative;
+}
+
+#mute-button { 
+    position: absolute;
+    left: 0;
 }
 
 .links { 
