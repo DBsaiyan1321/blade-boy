@@ -82,4 +82,15 @@ table {
     display: flex;
     color: white;
     justify-content: space-evenly;
+    width: 300px;
+}
+
+.link {
+    color: white;
+    text-decoration: none;
+    font-family: 'Josefin Sans', sans-serif;
+}
+
+.directions { 
+    color: white;
 }

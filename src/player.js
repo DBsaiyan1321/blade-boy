@@ -2,14 +2,14 @@ import Controller from "./controller";
 
 export default class Player { 
     constructor(maxHeight, maxWidth, platforms, ctx) { 
-        this.height = 32;
-        this.width = 10;
+        this.height = 64;
+        this.width = 20;
         // this.height = 100;
         // this.width = 100;
 
-        this.x = 144; // Left
+        this.x = 20; // Left
         this.velocityX = 0;
-        this.y = 0; // Top
+        this.y = maxHeight-100; // Top
         this.velocityY = 0;
 
         this.facing = "right"
