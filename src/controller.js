@@ -21,6 +21,7 @@ export default class Controller {
         } else if (event.keyCode === 87) { 
             this.up = keyState;
         } else if (event.keyCode === 32) { 
+            event.preventDefault(); // Need this because the song will start and stop if I just clicked the button
             this.space = keyState;
         }
     }
