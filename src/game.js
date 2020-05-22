@@ -11,7 +11,7 @@ export default class BladeBoy {
 
         this.muteButton = muteButton;
         this.sound = sound;
-        this.soundFlag = true;
+        this.soundFlag = false;
         this.muteButton.addEventListener("click", () => { 
             this.musicHandler()
         })
@@ -43,7 +43,7 @@ export default class BladeBoy {
 
         if (this.soundFlag) { 
             this.sound.play();
-            this.sound.volume = 0.25;
+            this.sound.volume = 0.10;
         } else if (!this.soundFlag) { 
             this.sound.pause();
         }
