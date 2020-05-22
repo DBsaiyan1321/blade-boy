@@ -81,4 +81,5 @@ table {
 .links { 
     display: flex;
     color: white;
+    justify-content: space-evenly;
 }
