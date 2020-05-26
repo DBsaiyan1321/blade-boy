@@ -9,6 +9,8 @@ export default class Platform {
         this.right = this.x + this.width
         this.bottom = this.y + this.height
 
+        this.columns = this.width / 25
+
         console.log(this.x, this.right, this.y, this.bottom)
 
         this.draw = this.draw.bind(this)
@@ -18,10 +20,16 @@ export default class Platform {
         // ctx.fillStyle = "black";
         // // ctx.fillRect(this.x, this.y, this.width, this.height)
         // ctx.fillRect(this.x, this.y, this.width, this.height)
+        
+        let spot = this.x;
+
         this.platformImg = new Image();
         this.platformImg.src = "./assets/Tilemap.png";
         this.platformImg.onload = () => {
-            ctx.drawImage(this.platformImg, 0, 0, 8, 8, this.x, this.y, this.width, this.height)
+            for (let i = 0; i < this.columns; i++) { 
+                ctx.drawImage(this.platformImg, 32, 8, 8, 8, spot, this.y, 25, this.height)
+                spot += 25
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 import Player from "./player";
 import Platform from "./platform";
+import Level1 from "./levels/level_1"
 
 export default class BladeBoy { 
     constructor(canvas, sound, muteButton) { 
@@ -16,13 +17,11 @@ export default class BladeBoy {
             this.musicHandler()
         })
         
-        this.platforms = [
-            // x, y, width, height
-            new Platform(200, 425, 100, 25, this.height, this.width),
-            new Platform(350, 425, 100, 25, this.height, this.width),
-            new Platform(100, 475, 100, 25, this.height, this.width) 
-        ];
-        this.player = new Player(this.height, this.width, this.platforms);
+
+        this.level1 = new Level1();
+        // Level 1 complete
+        this.platforms = this.level1.platforms
+        this.player = new Player(this.height, this.width, this.level1);
 
         this.gameLoop = this.gameLoop.bind(this);
         this.gameLoop()
@@ -36,6 +35,9 @@ export default class BladeBoy {
         this.drawBackground(this.ctx)
         this.player.loop(this.ctx)
         this.player.draw(this.ctx)
+
+        this.level1.draw(this.ctx); 
+        
         for (let i = 0; i < this.platforms.length; i++) { 
             let platform = this.platforms[i]
             platform.draw(this.ctx)
