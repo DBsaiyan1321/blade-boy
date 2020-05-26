@@ -1,8 +1,8 @@
 import Controller from "./controller";
 
 export default class Player { 
-    constructor(maxHeight, maxWidth, platforms, ctx) { 
-        this.height = 64;
+    constructor(maxHeight, maxWidth, level, ctx) { 
+        this.height = 40;
         this.width = 20;
         // this.height = 100;
         // this.width = 100;
@@ -23,7 +23,7 @@ export default class Player {
 
         this.maxX = maxWidth;
         this.maxY = maxHeight;
-        this.platforms = platforms // When I have more platforms, the game is going to pass in an array of them
+        this.platforms = level.platforms // When I have more platforms, the game is going to pass in an array of them
 
         this.jumping = true;
         
@@ -107,14 +107,14 @@ export default class Player {
     }
 
     draw(ctx) {
-        // ctx.fillStyle = "red";
-        // ctx.fillRect(this.x, this.y, this.width, this.height)
+        ctx.fillStyle = "red";
+        ctx.fillRect(this.x, this.y, this.width, this.height)
         // console.log(this.width, this.height)
-        this.playerImg = new Image();
-        this.playerImg.src = "./assets/adventurer-v1.5-Sheet.png"
-        this.playerImg.onload = () => {
-            ctx.drawImage(this.playerImg, 13, 0, 20, 37, this.x, this.y, this.width, this.height);
-        }
+        // this.playerImg = new Image();
+        // this.playerImg.src = "./assets/adventurer-v1.5-Sheet.png"
+        // this.playerImg.onload = () => {
+        //     ctx.drawImage(this.playerImg, 13, 0, 20, 40, this.x, this.y, this.width, this.height);
+        // }
     }
 
     attack(ctx) {
