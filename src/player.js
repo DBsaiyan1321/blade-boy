@@ -1,12 +1,16 @@
 import Controller from "./controller";
 
 export default class Player { 
-    constructor(maxHeight, maxWidth, level, ctx) { 
-        this.height = 80;
-        this.width = 40;
+    constructor(maxHeight, maxWidth, level, goal, ctx) { 
+        this.height = 60;
+        this.width = 30;
         // this.height = 100;
         // this.width = 100;
         this.ctx = ctx;
+
+        this.lives = 3;
+
+        this.maxHeight = maxHeight;
 
         this.x = 20; // Left
         this.velocityX = 0;
@@ -24,13 +28,30 @@ export default class Player {
 
         this.maxX = maxWidth;
         this.maxY = maxHeight;
-        this.platforms = level.platforms // When I have more platforms, the game is going to pass in an array of them
+        this.platforms = level.platforms;
+        this.goal = goal;
 
         this.jumping = true;
         
         this.attacked = false;
         this.attackDelay = 15;
         this.attackFrame = 0;
+
+        this.idleLoop = [10, 60, 110, 160] // These are the x values on the sprite sheet. The dimensions of the sprite sheet are shown in the blue bar at the bottom right.
+        this.idleFrame = 0;
+        this.idleFrameCount = 0;
+
+        this.leftLoop = [60, 110, 160, 210, 260, 310]
+        this.leftFrame = 0;
+        this.leftFrameCount = 0;
+
+        this.rightLoop = [60, 110, 160, 210, 260, 310]
+        this.rightFrame = 0;
+        this.rightFrameCount = 0;
+
+        this.jumpLoop = [110, 160, 210, 260, 310, 10, 60, 110]
+        this.jumpFrame = 0;
+        this.jumpFrameCount = 0;
 
         this.controller = new Controller()
         this.loop = this.loop.bind(this);
@@ -39,28 +60,13 @@ export default class Player {
         this.setRight = this.setRight.bind(this)
         this.draw = this.draw.bind(this);
         this.drawFrame = this.drawFrame.bind(this);
-
-        this.idleLoop = [0, 50, 98, 148]
-        this.idleFrame = 0;
-        this.idleFrameCount = 0;
-
-        this.leftLoop = [50, 98, 148, 196, 246, 294]
-        this.leftFrame = 0;
-        this.leftFrameCount = 0;
-
-        this.rightLoop = [50, 98, 148, 196, 246, 294]
-        this.rightFrame = 0;
-        this.rightFrameCount = 0;
-
-        this.jumpLoop = [98, 148, 196, 246, 294, 0, 50, 98]
-        this.jumpFrame = 0;
-        this.jumpFrameCount = 0;
     }
+
+
 
     loop(ctx) { 
         this.setBottom()
         this.setRight()
-        // this.setCenter()
 
         // Movement
         if (this.controller.up && !this.jumping) { 
@@ -84,18 +90,27 @@ export default class Player {
         this.velocityX *= 0.8 // friction
         this.velocityY *= 0.9 // friction
 
+
+        // Lives and Bounds
         // if the player is falling below the floor line
         if (this.y > this.maxY - this.height) { 
             this.jumping = false; 
-            this.y = this.maxY - this.height; 
+            this.y = this.maxHeight - 200; // This is working though
+            this.x = 20; // This isn't working rn
             this.velocityY = 0;
+            this.lives--
+            console.log(this.lives)
         }
 
-        // if the player is going off of the screen to the left 
+        // if the player is going off of the screen to the left or right
         if (this.x < 0) { 
             this.x = 0;
         } else if (this.x > this.maxX - this.width) { 
             this.x = this.maxX - this.width;
+        }
+
+        if (this.lives < 0) { 
+            this.lives = 3;
         }
 
         // Attack Logic
@@ -115,7 +130,7 @@ export default class Player {
         }
 
         // Checking if I'm hitting a platform
-        this.collidedWith(this.platforms)
+        this.collidedWith(this.platforms, this.goal);
 
         // Set the old dimensions to the current dimensions
         this.ol = this.x;
@@ -182,21 +197,25 @@ export default class Player {
         }
     }
 
+
+
     draw(ctx) {
         if (this.jumping) {
             if (this.jumpFrame <= 4) { 
-                this.drawFrame(ctx, this.jumpLoop[this.jumpFrame], 74, 40, 37)
+                this.drawFrame(ctx, this.jumpLoop[this.jumpFrame], 74, 27, 37)
             } else { 
-                this.drawFrame(ctx, this.jumpLoop[this.jumpFrame], 111, 40, 37)
+                this.drawFrame(ctx, this.jumpLoop[this.jumpFrame], 111, 27, 37)
             }
         } else if (this.controller.right) { 
-            this.drawFrame(ctx, this.rightLoop[this.rightFrame], 37, 40, 37)
+            this.drawFrame(ctx, this.rightLoop[this.rightFrame], 37, 27, 37)
         } else if (this.controller.left) { 
-            this.drawFrame(ctx, this.leftLoop[this.leftFrame], 37, 40, 37)
+            this.drawFrame(ctx, this.leftLoop[this.leftFrame], 37, 27, 37)
         } else { 
-            this.drawFrame(ctx, this.idleLoop[this.idleFrame], 0, 40, 37);
+            this.drawFrame(ctx, this.idleLoop[this.idleFrame], 0, 27, 37);
         }
     }
+
+
 
     drawFrame(ctx, frameX, frameY, canvasX, canvasY, x, y) { 
         this.playerImg = new Image();
@@ -212,6 +231,8 @@ export default class Player {
         }
     }
 
+
+
     attack(ctx) {
         ctx.fillStyle = "black";
         if (this.facing === "left") { 
@@ -221,15 +242,21 @@ export default class Player {
         }
     }
 
+
+
     setBottom() { 
         this.bottom = this.y + this.height
     }
+
+
 
     setRight() { 
         this.right = this.x + this.width
     }
 
-    collidedWith(platforms) { 
+
+
+    collidedWith(platforms, goal) { 
         for (let i = 0; i < platforms.length; i++) { 
             let platform = platforms[i];
 
@@ -249,6 +276,18 @@ export default class Player {
                 this.x = platform.x - this.width;
                 // this.right = this.x; // Prevents it from stuttering, but gets stuck to the wall. I already tried setting velocityX to 0 too.
             }
+        }
+
+        if (this.y > goal.bottom || this.bottom < goal.top || this.x > goal.right || this.right < goal.left) return false;
+
+        if (this.y <= goal.bottom && this.ot >= goal.bottom) {
+            return true;
+        } else if (this.bottom >= goal.top && this.ob <= goal.top) {
+            return true;
+        } else if (this.x <= goal.right && this.ol >= goal.right) {
+            return true;
+        } else if (this.right >= goal.left && this.or <= goal.left) {
+            return true;
         }
     }
 }

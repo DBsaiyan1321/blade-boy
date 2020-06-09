@@ -11,16 +11,10 @@ export default class Platform {
 
         this.columns = this.width / 25
 
-        console.log(this.x, this.right, this.y, this.bottom)
-
         this.draw = this.draw.bind(this)
     }
 
     draw(ctx) { 
-        // ctx.fillStyle = "black";
-        // // ctx.fillRect(this.x, this.y, this.width, this.height)
-        // ctx.fillRect(this.x, this.y, this.width, this.height)
-        
         let spot = this.x;
 
         this.platformImg = new Image();

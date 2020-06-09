@@ -1,6 +1,6 @@
 import Player from "./player";
-import Platform from "./platform";
 import Level1 from "./levels/level_1"
+import Level2 from "./levels/level_2"
 
 export default class BladeBoy { 
     constructor(canvas, sound, muteButton) { 
@@ -17,11 +17,10 @@ export default class BladeBoy {
             this.musicHandler()
         })
         
-        
-        this.levels = [new Level1()];
-        this.currentLevel = 0
+        this.levels = [new Level1(), new Level2()];
+        this.currentLevel = 1
         this.platforms = this.levels[this.currentLevel].platforms
-        this.player = new Player(this.height, this.width, this.levels[this.currentLevel], this.ctx);
+        this.player = new Player(this.height, this.width, this.levels[this.currentLevel], this.levels[this.currentLevel].goal_dimensions, this.ctx);
 
         this.gameLoop = this.gameLoop.bind(this);
         this.gameLoop()
@@ -34,7 +33,17 @@ export default class BladeBoy {
         // this.ctx.clearRect(0, 0, this.dimensions.width, this.dimensions.height); // For some reason this breaks the background
         this.drawBackground(this.ctx)
         this.player.loop(this.ctx)
-        // this.player.draw(this.ctx)
+        
+        if (this.player.collidedWith(this.levels[this.currentLevel], this.levels[this.currentLevel].goal_dimensions) === undefined) { // Whenever I'm on the goal, it returns undefined for some reason 
+            console.log("Next Level")
+            this.currentLevel++
+            this.player.x = 20;
+            this.player.y = this.height - 90;
+        }
+
+        if (this.player.lives === 0) { 
+            this.currentLevel = 1;
+        }
 
         this.levels[this.currentLevel].draw(this.ctx); 
         
@@ -70,10 +79,10 @@ export default class BladeBoy {
         }
     }
 
-    getDistance(obj1, obj2) { // Pythagorean Theroem
-        let xDistance = obj1.x - obj2.x; 
-        let yDistance = obj1.y - obj2.y;
+    // getDistance(obj1, obj2) { // Pythagorean Theroem
+    //     let xDistance = obj1.x - obj2.x; 
+    //     let yDistance = obj1.y - obj2.y;
 
-        return Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2))
-    }
+    //     return Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2))
+    // }
 }
