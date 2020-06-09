@@ -21,7 +21,7 @@ export default class BladeBoy {
         this.level1 = new Level1();
         // Level 1 complete
         this.platforms = this.level1.platforms
-        this.player = new Player(this.height, this.width, this.level1);
+        this.player = new Player(this.height, this.width, this.level1, this.ctx);
 
         this.gameLoop = this.gameLoop.bind(this);
         this.gameLoop()
@@ -34,7 +34,7 @@ export default class BladeBoy {
         // this.ctx.clearRect(0, 0, this.dimensions.width, this.dimensions.height); // For some reason this breaks the background
         this.drawBackground(this.ctx)
         this.player.loop(this.ctx)
-        this.player.draw(this.ctx)
+        // this.player.draw(this.ctx)
 
         this.level1.draw(this.ctx); 
         

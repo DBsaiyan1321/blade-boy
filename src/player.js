@@ -6,6 +6,7 @@ export default class Player {
         this.width = 20;
         // this.height = 100;
         // this.width = 100;
+        this.ctx = ctx;
 
         this.x = 20; // Left
         this.velocityX = 0;
@@ -37,6 +38,32 @@ export default class Player {
         this.setBottom = this.setBottom.bind(this)
         this.setRight = this.setRight.bind(this)
         this.draw = this.draw.bind(this);
+        this.drawFrame = this.drawFrame.bind(this);
+
+        this.idleLoop = [0, 50, 98, 148]
+        this.idleFrame = 0;
+        this.idleFrameCount = 0;
+
+        this.leftLoop = [0, 50, 98, 148]
+        this.leftFrame = 0;
+        this.leftFrameCount = 0;
+
+        this.rightLoop = [0, 50, 98, 148]
+        this.rightFrame = 0;
+        this.rightFrameCount = 0;
+
+        this.jumpLoop = [0, 50, 98, 148]
+        this.jumpFrame = 0;
+        this.jumpFrameCount = 0;
+        // this.spriteImage = new Image();
+        // this.spriteImage.src = "./assets/adventurer-v1.5-Sheet.png";
+
+        // this.sprite = new Sprite({
+        //     context: ctx, 
+        //     width: 100, 
+        //     height: 100,
+        //     image: this.spriteImage
+        // });
     }
 
     loop(ctx) { 
@@ -104,21 +131,35 @@ export default class Player {
         this.or = this.right; 
         this.ot = this.y; 
         this.ob = this.bottom;
+
+        this.draw(this.ctx)
+
+        this.idleFrameCount++ 
+
+        if (this.idleFrameCount === 10) { 
+            this.idleFrame++ 
+            this.idleFrameCount = 0;
+        }
+
+        if (this.idleFrame >= this.idleLoop.length) { 
+            this.idleFrame = 0;
+        }
     }
 
     draw(ctx) {
-        ctx.fillStyle = "red";
-        ctx.fillRect(this.x, this.y, this.width, this.height)
-        // console.log(this.width, this.height)
-        // this.playerImg = new Image();
-        // this.playerImg.src = "./assets/adventurer-v1.5-Sheet.png"
-        // this.playerImg.onload = () => {
-        //     ctx.drawImage(this.playerImg, 13, 0, 20, 40, this.x, this.y, this.width, this.height);
-        // }
+        this.drawFrame(ctx, this.idleLoop[this.idleFrame], 0, 40, 40);
+    }
+
+    drawFrame(ctx, frameX, frameY, canvasX, canvasY, x, y) { 
+        this.playerImg = new Image();
+        this.playerImg.src = "./assets/adventurer-v1.5-Sheet.png"
+        this.playerImg.onload = () => {
+            ctx.drawImage(this.playerImg, frameX, frameY, canvasX, canvasY, this.x, this.y, this.width, this.height);
+        }
     }
 
     attack(ctx) {
-        ctx.fillStyle = "blue";
+        ctx.fillStyle = "black";
         if (this.facing === "left") { 
             ctx.fillRect(this.x, this.y, -20, this.height)
         } else if (this.facing === "right") { 
