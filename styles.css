@@ -94,3 +94,7 @@ table {
 .directions { 
     color: white;
 }
+
+#left { 
+    transform: scaleX(-1);
+}

@@ -2,15 +2,15 @@ import Controller from "./controller";
 
 export default class Player { 
     constructor(maxHeight, maxWidth, level, ctx) { 
-        this.height = 40;
-        this.width = 20;
+        this.height = 80;
+        this.width = 40;
         // this.height = 100;
         // this.width = 100;
         this.ctx = ctx;
 
         this.x = 20; // Left
         this.velocityX = 0;
-        this.y = maxHeight-100; // Top
+        this.y = maxHeight-200; // Top
         this.velocityY = 0;
 
         this.facing = "right"
@@ -44,26 +44,17 @@ export default class Player {
         this.idleFrame = 0;
         this.idleFrameCount = 0;
 
-        this.leftLoop = [0, 50, 98, 148]
+        this.leftLoop = [50, 98, 148, 196, 246, 294]
         this.leftFrame = 0;
         this.leftFrameCount = 0;
 
-        this.rightLoop = [0, 50, 98, 148]
+        this.rightLoop = [50, 98, 148, 196, 246, 294]
         this.rightFrame = 0;
         this.rightFrameCount = 0;
 
-        this.jumpLoop = [0, 50, 98, 148]
+        this.jumpLoop = [98, 148, 196, 246, 294, 0, 50, 98]
         this.jumpFrame = 0;
         this.jumpFrameCount = 0;
-        // this.spriteImage = new Image();
-        // this.spriteImage.src = "./assets/adventurer-v1.5-Sheet.png";
-
-        // this.sprite = new Sprite({
-        //     context: ctx, 
-        //     width: 100, 
-        //     height: 100,
-        //     image: this.spriteImage
-        // });
     }
 
     loop(ctx) { 
@@ -132,29 +123,92 @@ export default class Player {
         this.ot = this.y; 
         this.ob = this.bottom;
 
+        // Animations
         this.draw(this.ctx)
 
-        this.idleFrameCount++ 
+        if (this.jumping) { 
+            this.jumpFrameCount++
 
-        if (this.idleFrameCount === 10) { 
-            this.idleFrame++ 
-            this.idleFrameCount = 0;
-        }
+            if (this.jumpFrameCount === 4) {
+                this.jumpFrame++
+                this.jumpFrameCount = 0;
+            }
 
-        if (this.idleFrame >= this.idleLoop.length) { 
-            this.idleFrame = 0;
+            if (this.jumpFrame >= this.jumpLoop.length) {
+                this.jumpFrame = 7;
+            }
+        } else if (this.controller.right) { 
+            this.rightFrameCount++
+
+            if (this.rightFrameCount === 7) {
+                this.rightFrame++
+                this.rightFrameCount = 0;
+            }
+
+            if (this.rightFrame >= this.rightLoop.length) {
+                this.rightFrame = 0;
+            }
+        } else if (this.controller.left) {
+            this.leftFrameCount++
+
+            if (this.leftFrameCount === 7) {
+                this.leftFrame++
+                this.leftFrameCount = 0;
+            }
+
+            if (this.leftFrame >= this.leftLoop.length) {
+                this.leftFrame = 0;
+            }
+        } else {
+            this.idleFrameCount++
+
+            if (this.idleFrameCount === 10) {
+                this.idleFrame++
+                this.idleFrameCount = 0;
+            }
+
+            if (this.idleFrame >= this.idleLoop.length) {
+                this.idleFrame = 0;
+            }
+
+            this.leftFrame = 0;
+            this.leftFrameCount = 0;
+
+            this.rightFrame = 0;
+            this.rightFrameCount = 0;
+
+            this.jumpFrame = 0;
+            this.jumpFrameCount = 0;
         }
     }
 
     draw(ctx) {
-        this.drawFrame(ctx, this.idleLoop[this.idleFrame], 0, 40, 40);
+        if (this.jumping) {
+            if (this.jumpFrame <= 4) { 
+                this.drawFrame(ctx, this.jumpLoop[this.jumpFrame], 74, 40, 37)
+            } else { 
+                this.drawFrame(ctx, this.jumpLoop[this.jumpFrame], 111, 40, 37)
+            }
+        } else if (this.controller.right) { 
+            this.drawFrame(ctx, this.rightLoop[this.rightFrame], 37, 40, 37)
+        } else if (this.controller.left) { 
+            this.drawFrame(ctx, this.leftLoop[this.leftFrame], 37, 40, 37)
+        } else { 
+            this.drawFrame(ctx, this.idleLoop[this.idleFrame], 0, 40, 37);
+        }
     }
 
     drawFrame(ctx, frameX, frameY, canvasX, canvasY, x, y) { 
         this.playerImg = new Image();
         this.playerImg.src = "./assets/adventurer-v1.5-Sheet.png"
         this.playerImg.onload = () => {
-            ctx.drawImage(this.playerImg, frameX, frameY, canvasX, canvasY, this.x, this.y, this.width, this.height);
+            // this.playerImg.setAttribute("id", "player");
+            if (this.controller.left) {
+                ctx.drawImage(this.playerImg, frameX, frameY, canvasX, canvasY, this.x, this.y, this.width, this.height);
+            } else { 
+                // this.playerImg.className = ""
+                ctx.drawImage(this.playerImg, frameX, frameY, canvasX, canvasY, this.x, this.y, this.width, this.height);
+            }
         }
     }
 

@@ -2,19 +2,6 @@ import Platform from "../platform";
 
 export default class Level1 { 
     constructor() { 
-        // this.platforms = [
-        //     // x, y, width, height
-        //     new Platform(0, 475, 350, 25, this.height, this.width), new Platform(500, 475, 400, 25, this.height, this.width),
-
-        //     new Platform(875, 400, 25, 25, this.height, this.width),
-
-        //     new Platform(0, 300, 350, 25, this.height, this.width), new Platform(500, 300, 325, 25, this.height, this.width),
-
-        //     new Platform(0, 225, 25, 25, this.height, this.width),
-
-        //     new Platform(75, 125, 275, 25, this.height, this.width), new Platform(500, 125, 400, 25, this.height, this.width),
-        // ];
-
         this.platforms = [
             // x, y, width, height
             new Platform(0, 475, 350, 25), new Platform(500, 475, 400, 25),
