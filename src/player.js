@@ -2,8 +2,8 @@ import Controller from "./controller";
 
 export default class Player { 
     constructor(maxHeight, maxWidth, level, goal, ctx) { 
-        this.height = 60;
-        this.width = 30;
+        this.height = 75;
+        this.width = 50;
         // this.height = 100;
         // this.width = 100;
         this.ctx = ctx;
@@ -37,6 +37,7 @@ export default class Player {
         this.attackDelay = 15;
         this.attackFrame = 0;
 
+        // The sprites are 50px are from each other horizontally on the sprite sheet
         this.idleLoop = [10, 60, 110, 160] // These are the x values on the sprite sheet. The dimensions of the sprite sheet are shown in the blue bar at the bottom right.
         this.idleFrame = 0;
         this.idleFrameCount = 0;
@@ -90,14 +91,14 @@ export default class Player {
         this.velocityX *= 0.8 // friction
         this.velocityY *= 0.9 // friction
 
-
         // Lives and Bounds
         // if the player is falling below the floor line
         if (this.y > this.maxY - this.height) { 
             this.jumping = false; 
+            this.velocityY = 0;
+
             this.y = this.maxHeight - 200; // This is working though
             this.x = 20; // This isn't working rn
-            this.velocityY = 0;
             this.lives--
             console.log(this.lives)
         }
@@ -246,13 +247,13 @@ export default class Player {
 
 
     setBottom() { 
-        this.bottom = this.y + this.height
+        this.bottom = this.y + this.height;
     }
 
 
 
     setRight() { 
-        this.right = this.x + this.width
+        this.right = this.x + this.width;
     }
 
 
@@ -261,20 +262,25 @@ export default class Player {
         for (let i = 0; i < platforms.length; i++) { 
             let platform = platforms[i];
 
-            // I don't understand this line, but I understand everything else
+            // if (this.y > platform.bottom || this.bottom < platform.y || this.x > platform.right || this.right < platform.x) return;
             if (this.y > platform.bottom || this.bottom < platform.y || this.x > platform.right || this.right < platform.x) continue;
 
-            if (this.y <= platform.bottom && this.ot >= platform.bottom) {
-                this.y = platform.bottom
+            if (this.y <= platform.bottom && this.ot > platform.bottom) {
+                this.y = platform.bottom + 0.1;
                 this.velocityY = 0;
-            } else if (this.bottom >= platform.y && this.ob <= platform.y) {
-                this.y = platform.y - this.height;
+            } else if (this.bottom >= platform.y && this.ob < platform.y) {
+                this.y = platform.y - this.height - 0.1; // Doing this made the collider work for when the player's right side hits the platforms left side. 
                 this.velocityY = 0; // Set the gravity to 0, or else it will look like the player is stuttering
                 this.jumping = false;
-            } else if (this.x <= platform.right && this.ol >= platform.right) {
-                this.x = platform.right
-            } else if (this.right >= platform.x && this.or <= platform.x) {
-                this.x = platform.x - this.width;
+            } else if (this.x <= platform.right && this.ol > platform.right) {
+                this.x = platform.right + 0.1;
+                this.velocityX = 0
+            } else if (this.right >= platform.x && this.or < platform.x) {
+                this.x = platform.x - this.width - 0.1; // I don't know why this stutters, but the bottom one doesn't stutter
+                this.velocityX = 0;
+                // this.setRight()
+                // this.velocityX = 0; // Prevents the stuttering, but still gets stuck
+                // this.right = platform.x // Doesn't work because yo u go right through
                 // this.right = this.x; // Prevents it from stuttering, but gets stuck to the wall. I already tried setting velocityX to 0 too.
             }
         }

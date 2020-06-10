@@ -8,7 +8,6 @@ document.addEventListener("DOMContentLoaded", () => {
     platformImg.src = "./assets/Tilemap.png";
     platformImg.setAttribute("id", "platform")
     platformImg.onload = () => { 
-        console.log(platformImg)
         new BladeBoy(canvas, sound, muteButton, platformImg) 
     }
 })
