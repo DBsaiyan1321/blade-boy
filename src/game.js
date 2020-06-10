@@ -1,4 +1,5 @@
 import Player from "./player";
+import Level0 from "./levels/level_0"
 import Level1 from "./levels/level_1"
 import Level2 from "./levels/level_2"
 import Level3 from "./levels/level_3"
@@ -19,29 +20,35 @@ export default class BladeBoy {
         })
         
         // this.levels = [new Level1(), new Level2(), new Level3()];
-        this.levels = [new Level3(this.ctx)];
+        this.levels = [new Level0(this.ctx), new Level3(this.ctx)];
         this.currentLevel = 0
         // this.platforms = this.levels[this.currentLevel].platforms
         this.player = new Player(this.height, this.width, this.levels[this.currentLevel], this.levels[this.currentLevel].goal_dimensions, this.ctx);
 
         this.gameLoop = this.gameLoop.bind(this);
-        this.gameLoop()
+
+        this.backgroundImg = new Image();
+        this.backgroundImg.src = "./assets/background_glacial_mountains.png";
+        this.backgroundImg.onload = () => {
+            this.gameLoop()
+        }
     }
 
     gameLoop(timeStamp) { 
         let deltaTime = timeStamp - this.lastTime
         this.lastTime = timeStamp
 
-        // this.ctx.clearRect(0, 0, this.dimensions.width, this.dimensions.height); // For some reason this breaks the background
+        // this.ctx.clearRect(0, 0, this.dimensions.width, this.dimensions.height); // For some reason this isn't needed
         this.drawBackground(this.ctx)
         this.player.loop(this.ctx)
         
-        if (this.player.collidedWith(this.levels[this.currentLevel], this.levels[this.currentLevel].goal_dimensions) === undefined) { // Whenever I'm on the goal, it returns undefined for some reason 
+        if (this.player.collidedWith(this.levels[this.currentLevel], this.levels[this.currentLevel].goal_dimensions) === true) { // Whenever I'm on the goal, it returns undefined for some reason 
             console.log("Next Level")
             this.currentLevel++
             this.player.x = 20;
             this.player.y = this.height - 90;
         }
+        // console.log(this.player.collidedWith(this.levels[this.currentLevel], this.levels[this.currentLevel].goal_dimensions))
 
         if (this.player.lives === 0) { 
             this.currentLevel = 0;
@@ -66,12 +73,12 @@ export default class BladeBoy {
     }
 
     drawBackground(ctx) {
-        this.backgroundImg = new Image();
-        this.backgroundImg.src = "./assets/background_glacial_mountains.png";
-        this.backgroundImg.onload = () => {
+        // this.backgroundImg = new Image();
+        // this.backgroundImg.src = "./assets/background_glacial_mountains.png";
+        // this.backgroundImg.onload = () => {
             this.ctx.drawImage(this.backgroundImg, 0, 0, this.dimensions.width, this.dimensions.height);
             // this.ctx.beginPath();
-        }
+        // }
     }
 
     musicHandler() { 

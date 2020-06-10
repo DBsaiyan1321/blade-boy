@@ -4,8 +4,6 @@ export default class Player {
     constructor(maxHeight, maxWidth, level, goal, ctx) { 
         this.height = 75;
         this.width = 50;
-        // this.height = 100;
-        // this.width = 100;
         this.ctx = ctx;
 
         this.lives = 3;
@@ -61,6 +59,10 @@ export default class Player {
         this.setRight = this.setRight.bind(this)
         this.draw = this.draw.bind(this);
         this.drawFrame = this.drawFrame.bind(this);
+
+        // Images
+        this.playerImg = new Image();
+        this.playerImg.src = "./assets/adventurer-v1.5-Sheet.png"
     }
 
 
@@ -219,17 +221,10 @@ export default class Player {
 
 
     drawFrame(ctx, frameX, frameY, canvasX, canvasY, x, y) { 
-        this.playerImg = new Image();
-        this.playerImg.src = "./assets/adventurer-v1.5-Sheet.png"
-        this.playerImg.onload = () => {
-            // this.playerImg.setAttribute("id", "player");
-            if (this.controller.left) {
-                ctx.drawImage(this.playerImg, frameX, frameY, canvasX, canvasY, this.x, this.y, this.width, this.height);
-            } else { 
-                // this.playerImg.className = ""
-                ctx.drawImage(this.playerImg, frameX, frameY, canvasX, canvasY, this.x, this.y, this.width, this.height);
-            }
-            // console.log(this.playerImg)
+        if (this.controller.left) {
+            ctx.drawImage(this.playerImg, frameX, frameY, canvasX, canvasY, this.x, this.y, this.width, this.height);
+        } else { 
+            ctx.drawImage(this.playerImg, frameX, frameY, canvasX, canvasY, this.x, this.y, this.width, this.height);
         }
     }
 
@@ -262,9 +257,9 @@ export default class Player {
         for (let i = 0; i < platforms.length; i++) { 
             let platform = platforms[i];
 
-            // if (this.y > platform.bottom || this.bottom < platform.y || this.x > platform.right || this.right < platform.x) return;
             if (this.y > platform.bottom || this.bottom < platform.y || this.x > platform.right || this.right < platform.x) continue;
 
+            // Adding or subtracting 0.1 is just what I needed to fix my collider. And changing the second conditional to <> instead of <= >=. Also, setting velocity to 0 helped with stuttering.
             if (this.y <= platform.bottom && this.ot > platform.bottom) {
                 this.y = platform.bottom + 0.1;
                 this.velocityY = 0;
@@ -276,25 +271,13 @@ export default class Player {
                 this.x = platform.right + 0.1;
                 this.velocityX = 0
             } else if (this.right >= platform.x && this.or < platform.x) {
-                this.x = platform.x - this.width - 0.1; // I don't know why this stutters, but the bottom one doesn't stutter
+                this.x = platform.x - this.width - 0.1; 
                 this.velocityX = 0;
-                // this.setRight()
-                // this.velocityX = 0; // Prevents the stuttering, but still gets stuck
-                // this.right = platform.x // Doesn't work because yo u go right through
-                // this.right = this.x; // Prevents it from stuttering, but gets stuck to the wall. I already tried setting velocityX to 0 too.
             }
         }
 
         if (this.y > goal.bottom || this.bottom < goal.top || this.x > goal.right || this.right < goal.left) return false;
 
-        if (this.y <= goal.bottom && this.ot >= goal.bottom) {
-            return true;
-        } else if (this.bottom >= goal.top && this.ob <= goal.top) {
-            return true;
-        } else if (this.x <= goal.right && this.ol >= goal.right) {
-            return true;
-        } else if (this.right >= goal.left && this.or <= goal.left) {
-            return true;
-        }
+        return true 
     }
 }
