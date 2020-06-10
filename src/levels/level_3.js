@@ -39,6 +39,10 @@ export default class Level3 {
             bottom: this.goal.y + this.goal.height
         }
 
+        this.goalLoop = [0, 16, 32, 48]
+        this.goalFrame = 0;
+        this.goalFrameCount = 0;
+
         this.draw = this.draw.bind(this);
         this.getTile = this.getTile.bind(this);
         this.init = this.init.bind(this)
@@ -68,10 +72,6 @@ export default class Level3 {
     }
 
     draw(ctx) { // I don't like how this makes a new image every single time. In my index.js, I just need to load an image on there and assign it's id to something so I can grab it. Update: I tried this and it didn't work.
-        // for (let i = 0; i < this.platforms.length; i++) {
-        //     let platform = this.platforms[i]
-        //     platform.draw(ctx)
-        // }
         this.platformImg = new Image();
         this.platformImg.src = "./assets/Tilemap.png";
         this.platformImg.onload = () => {
@@ -80,8 +80,25 @@ export default class Level3 {
                 ctx.drawImage(this.platformImg, platform.spriteX, platform.spriteY, platform.spriteWidth, platform.spriteHeight, platform.x, platform.y, platform.width, platform.height)
             }
         }
-        ctx.fillStyle = "yellow"
-        ctx.fillRect(this.goal.x, this.goal.y, this.goal.width, this.goal.height)
+
+        this.goalImg = new Image();
+        this.goalImg.src = "./assets/MonedaD.png";
+        this.goalImg.onload = () => {
+            ctx.drawImage(this.goalImg, this.goalLoop[this.goalFrame], 0, 16, 16, this.goal.x, this.goal.y, this.goal.width, this.goal.height)
+        }
+
+        this.goalFrameCount++
+
+        if (this.goalFrameCount === 10) { 
+            this.goalFrame++
+            this.goalFrameCount = 0;
+        }
+
+        if (this.goalFrame === 4) { 
+            this.goalFrame = 0;
+        }
+        // ctx.fillStyle = "yellow"
+        // ctx.fillRect(this.goal.x, this.goal.y, this.goal.width, this.goal.height)
     }
 
     getTile(col, row) { 
