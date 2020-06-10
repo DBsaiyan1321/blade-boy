@@ -4,5 +4,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const canvas = document.getElementById("game-canvas");
     const sound = document.getElementById("sound");
     const muteButton = document.getElementById("mute-button")
-    new BladeBoy(canvas, sound, muteButton) 
+    const platformImg = new Image();
+    platformImg.src = "./assets/Tilemap.png";
+    platformImg.setAttribute("id", "platform")
+    platformImg.onload = () => { 
+        console.log(platformImg)
+        new BladeBoy(canvas, sound, muteButton, platformImg) 
+    }
 })

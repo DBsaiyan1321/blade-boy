@@ -1,9 +1,10 @@
 import Player from "./player";
 import Level1 from "./levels/level_1"
 import Level2 from "./levels/level_2"
+import Level3 from "./levels/level_3"
 
 export default class BladeBoy { 
-    constructor(canvas, sound, muteButton) { 
+    constructor(canvas, sound, muteButton, platformImg) { 
         this.ctx = canvas.getContext("2d");
         this.dimensions = { width: canvas.width, height: canvas.height }
         this.lastTime = 0;
@@ -17,9 +18,10 @@ export default class BladeBoy {
             this.musicHandler()
         })
         
-        this.levels = [new Level1(), new Level2()];
-        this.currentLevel = 1
-        this.platforms = this.levels[this.currentLevel].platforms
+        // this.levels = [new Level1(), new Level2(), new Level3()];
+        this.levels = [new Level3(this.ctx)];
+        this.currentLevel = 0
+        // this.platforms = this.levels[this.currentLevel].platforms
         this.player = new Player(this.height, this.width, this.levels[this.currentLevel], this.levels[this.currentLevel].goal_dimensions, this.ctx);
 
         this.gameLoop = this.gameLoop.bind(this);
@@ -42,15 +44,16 @@ export default class BladeBoy {
         }
 
         if (this.player.lives === 0) { 
-            this.currentLevel = 1;
+            this.currentLevel = 0;
         }
 
+        // Draws the goal
         this.levels[this.currentLevel].draw(this.ctx); 
         
-        for (let i = 0; i < this.platforms.length; i++) { 
-            let platform = this.platforms[i]
-            platform.draw(this.ctx)
-        }
+        // for (let i = 0; i < this.platforms.length; i++) { 
+        //     let platform = this.platforms[i]
+        //     platform.draw(this.ctx)
+        // }
 
         if (this.soundFlag) { 
             this.sound.play();

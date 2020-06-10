@@ -228,6 +228,7 @@ export default class Player {
                 // this.playerImg.className = ""
                 ctx.drawImage(this.playerImg, frameX, frameY, canvasX, canvasY, this.x, this.y, this.width, this.height);
             }
+            // console.log(this.playerImg)
         }
     }
 
