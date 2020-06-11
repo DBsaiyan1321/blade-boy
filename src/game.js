@@ -19,9 +19,10 @@ export default class BladeBoy {
             this.musicHandler()
         })
         
-        this.levels = [new Level0(this.ctx), new Level1(), new Level2(), new Level3(this.ctx)];
+    
+        this.player = new Player(this.height, this.width, this.ctx); 
+        this.levels = [new Level0(this.ctx), new Level1(this.ctx, this.player), new Level2(this.ctx, this.player), new Level3(this.ctx, this.player)];
         this.currentLevel = 0
-        this.player = new Player(this.height, this.width, this.ctx); // This is why the colliders don't change when the level changes. Fix this
 
         this.gameLoop = this.gameLoop.bind(this);
 
@@ -35,13 +36,18 @@ export default class BladeBoy {
     gameLoop(timeStamp) { 
         let deltaTime = timeStamp - this.lastTime
         this.lastTime = timeStamp
-
+        
         // console.log(this.currentLevel)
         // this.ctx.clearRect(0, 0, this.dimensions.width, this.dimensions.height); // For some reason this isn't needed
         this.drawBackground(this.ctx)
 
-        this.player.loop(this.ctx, this.levels[this.currentLevel].platforms, this.levels[this.currentLevel].goal_dimensions)
-        
+        // this.player.loop(this.ctx, this.levels[this.currentLevel].platforms, this.levels[this.currentLevel].goal_dimensions)
+
+        if (this.player.loop(this.ctx, this.levels[this.currentLevel].platforms, this.levels[this.currentLevel].goal_dimensions) === true) {
+            this.player.x = this.levels[this.currentLevel].startingPosition.x;
+            this.player.y = this.levels[this.currentLevel].startingPosition.y;
+        }
+
         if (this.player.collidedWith(this.levels[this.currentLevel], this.levels[this.currentLevel].goal_dimensions) === true) { // Whenever I'm on the goal, it returns undefined for some reason 
             this.currentLevel++
             if (this.currentLevel === this.levels.length) { 
@@ -53,6 +59,9 @@ export default class BladeBoy {
 
         if (this.player.lives === 0) { 
             this.currentLevel = 0;
+            this.player.lives = 3;
+            this.player.x = this.levels[0].startingPosition.x;
+            this.player.y = this.levels[0].startingPosition.y;
         }
 
         // Draws the goal
