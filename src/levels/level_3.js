@@ -47,7 +47,7 @@ export default class Level3 {
         this.getTile = this.getTile.bind(this);
         this.init = this.init.bind(this)
 
-        this.startingPosition = { x: 830, y: 400 }
+        this.startingPosition = { x: 860, y: 400 }
 
         this.player = player;
 

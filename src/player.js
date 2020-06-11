@@ -28,6 +28,7 @@ export default class Player {
         this.maxY = maxHeight;
 
         this.jumping = true;
+        this.grounded = false;
         
         this.attacked = false;
         this.attackDelay = 15;
@@ -75,9 +76,17 @@ export default class Player {
         let lostLife = false;
 
         // Movement
-        if (this.controller.up && !this.jumping) { 
+        if (this.controller.up && !this.jumping && this.grounded) { 
             this.velocityY -= 20;
             this.jumping = true;
+            this.grounded = false;
+        }
+
+        if (!(Math.round(this.ob) == Math.round(this.bottom) || // This is my hacky way to check if the character is grounded or not. I had to did this for the falling logic so the animation is right and he can't jump more.
+            Math.round(this.ob) == Math.round(this.bottom - 1) || 
+            Math.round(this.ob) == Math.round(this.bottom + 1)) && 
+            !this.jumping) { 
+            this.grounded = false;
         }
 
         if (this.controller.left) { 
@@ -197,6 +206,8 @@ export default class Player {
             this.jumpFrameCount = 0;
         }
 
+        // console.log(this.grounded)
+
         return lostLife
     }
 
@@ -213,6 +224,8 @@ export default class Player {
             } else { 
                 this.drawFrame(ctx, this.jumpLoop[this.jumpFrame], 111, 27, 37)
             }
+        } else if (!this.jumping && !this.grounded) { // Falling off of a platform
+            this.drawFrame(ctx, this.jumpLoop[7], 111, 27, 37) 
         } else if (this.controller.right) { 
             this.drawFrame(ctx, this.rightLoop[this.rightFrame], 43, 30, 31)
         } else if (this.controller.left) { 
@@ -265,7 +278,7 @@ export default class Player {
         for (let i = 0; i < platforms.length; i++) { 
             let platform = platforms[i];
 
-            if (this.y > platform.bottom || this.bottom < platform.y || this.x > platform.right || this.right < platform.x) continue;
+            if (this.y > platform.bottom || this.bottom < platform.y || this.x > platform.right || this.right < platform.x) continue; // Jumps to the next iteration
 
             // Adding or subtracting 0.1 is just what I needed to fix my collider. And changing the second conditional to <> instead of <= >=. Also, setting velocity to 0 helped with stuttering.
             if (this.y <= platform.bottom && this.ot > platform.bottom) {
@@ -276,6 +289,8 @@ export default class Player {
                 this.velocityY = 0; // Set the gravity to 0, or else it will look like the player is stuttering
                 this.jumping = false;
                 this.jumpFrame = 0; // The jumping animation will get stuck at 7 when I hold is down if I didn't put this.
+                this.grounded = true;
+                // console.log("touching") 
             } else if (this.x <= platform.right && this.ol > platform.right) {
                 this.x = platform.right + 0.1;
                 this.velocityX = 0

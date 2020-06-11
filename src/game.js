@@ -36,7 +36,7 @@ export default class BladeBoy {
     gameLoop(timeStamp) { 
         let deltaTime = timeStamp - this.lastTime
         this.lastTime = timeStamp
-
+        
         // console.log(this.currentLevel)
         // this.ctx.clearRect(0, 0, this.dimensions.width, this.dimensions.height); // For some reason this isn't needed
         this.drawBackground(this.ctx)
