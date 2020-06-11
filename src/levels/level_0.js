@@ -43,7 +43,7 @@ export default class Level0 {
         this.goalFrame = 0;
         this.goalFrameCount = 0;
 
-        this.startingPosition = { x: 20, y: 200 }
+        this.startingPosition = { x: 20, y: 300 }
 
         this.draw = this.draw.bind(this);
         this.getTile = this.getTile.bind(this);
@@ -99,6 +99,14 @@ export default class Level0 {
         if (this.goalFrame === 5) {
             this.goalFrame = 0;
         }
+
+        ctx.fillStyle = "black";
+        ctx.font = '140px Audiowide';
+        ctx.fillText('Blade Boy', 50, 170);
+
+        // ctx.font = '50px Heebo'
+        // ctx.fillStyle = "blue";
+        // ctx.fillText('Directions:', 600, 90);
     }
 
     getTile(col, row) {

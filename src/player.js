@@ -72,6 +72,8 @@ export default class Player {
         this.setBottom()
         this.setRight()
 
+        let lostLife = false;
+
         // Movement
         if (this.controller.up && !this.jumping) { 
             this.velocityY -= 20;
@@ -100,10 +102,9 @@ export default class Player {
             this.jumping = false; 
             this.velocityY = 0;
 
-            this.y = this.maxHeight - 200; // This is working though
-            this.x = 20; // This isn't working rn
             this.lives--
-            console.log(this.lives)
+
+            lostLife = true
         }
 
         // if the player is going off of the screen to the left or right
@@ -111,10 +112,6 @@ export default class Player {
             this.x = 0;
         } else if (this.x > this.maxX - this.width) { 
             this.x = this.maxX - this.width;
-        }
-
-        if (this.lives < 0) { 
-            this.lives = 3;
         }
 
         // Attack Logic
@@ -199,6 +196,8 @@ export default class Player {
             this.jumpFrame = 0;
             this.jumpFrameCount = 0;
         }
+
+        return lostLife
     }
 
 
@@ -221,6 +220,10 @@ export default class Player {
         } else { 
             this.drawFrame(ctx, this.idleLoop[this.idleFrame], 6, 30, 31);
         }
+
+        // ctx.fillStyle = "black";
+        // ctx.font = '24px arial';
+        // ctx.fillText(`Lives: ${this.lives}`, 810, 25);
     }
 
 

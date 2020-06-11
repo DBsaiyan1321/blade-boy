@@ -1,7 +1,7 @@
 import Platform from "../platform";
 
 export default class Level2 {
-    constructor(ctx) {
+    constructor(ctx, player) {
         this.rows = 20;
         this.cols = 36;
         this.tileSize = 25;
@@ -43,7 +43,9 @@ export default class Level2 {
         this.goalFrame = 0;
         this.goalFrameCount = 0;
 
-        this.startingPosition = { x: 100, y: 200 }
+        this.startingPosition = { x: 100, y: 400 }
+
+        this.player = player;
 
         this.draw = this.draw.bind(this);
         this.getTile = this.getTile.bind(this);
@@ -99,6 +101,10 @@ export default class Level2 {
         if (this.goalFrame === 5) {
             this.goalFrame = 0;
         }
+
+        ctx.fillStyle = "black";
+        ctx.font = '24px arial';
+        ctx.fillText(`Lives: ${this.player.lives}`, 810, 25);
     }
 
     getTile(col, row) {
