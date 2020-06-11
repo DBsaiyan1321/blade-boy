@@ -71,30 +71,41 @@ table {
     height: fit-content;
     width: fit-content;
     position: relative;
+    border: 10px solid #3b00ad;
 }
 
 #mute-button { 
     position: absolute;
-    left: 0;
+    left: 8px;
+    top: 5px;
+    background-color: #c24d53;
+    outline: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #e6bc93;
+    border-radius: 5px;
+    box-shadow: 0px 3px 0px 2px #000000bd;
+    font-family: 'Bebas Neue', Arial, Helvetica, sans-serif;
+    letter-spacing: 1.75px;
 }
 
 .links { 
     display: flex;
     color: white;
     justify-content: space-evenly;
-    width: 300px;
+    width: 350px;
 }
 
 .link {
     color: white;
     text-decoration: none;
     font-family: 'Josefin Sans', sans-serif;
+    font-size: 20px;
 }
 
 .directions { 
     color: white;
+    font-family: 'Heebo', sans-serif;
+    font-size: 16px;
 }
 
-#left { 
-    transform: scaleX(-1);
-}

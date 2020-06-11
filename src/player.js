@@ -1,9 +1,9 @@
 import Controller from "./controller";
 
 export default class Player { 
-    constructor(maxHeight, maxWidth, level, goal, ctx) { 
-        this.height = 75;
-        this.width = 50;
+    constructor(maxHeight, maxWidth, ctx) { 
+        this.height = 48;
+        this.width = 36;
         this.ctx = ctx;
 
         this.lives = 3;
@@ -26,8 +26,6 @@ export default class Player {
 
         this.maxX = maxWidth;
         this.maxY = maxHeight;
-        this.platforms = level.platforms;
-        this.goal = goal;
 
         this.jumping = true;
         
@@ -63,11 +61,14 @@ export default class Player {
         // Images
         this.playerImg = new Image();
         this.playerImg.src = "./assets/adventurer-v1.5-Sheet.png"
+
+        this.playerImgReversed = new Image();
+        this.playerImgReversed.src = "./assets/adventurer-v1.5-Sheet-reversed.png"
     }
 
 
 
-    loop(ctx) { 
+    loop(ctx, platforms, goal) { 
         this.setBottom()
         this.setRight()
 
@@ -133,7 +134,7 @@ export default class Player {
         }
 
         // Checking if I'm hitting a platform
-        this.collidedWith(this.platforms, this.goal);
+        this.collidedWith(platforms, goal);
 
         // Set the old dimensions to the current dimensions
         this.ol = this.x;
@@ -158,7 +159,7 @@ export default class Player {
         } else if (this.controller.right) { 
             this.rightFrameCount++
 
-            if (this.rightFrameCount === 7) {
+            if (this.rightFrameCount === 6) {
                 this.rightFrame++
                 this.rightFrameCount = 0;
             }
@@ -169,7 +170,7 @@ export default class Player {
         } else if (this.controller.left) {
             this.leftFrameCount++
 
-            if (this.leftFrameCount === 7) {
+            if (this.leftFrameCount === 6) {
                 this.leftFrame++
                 this.leftFrameCount = 0;
             }
@@ -203,6 +204,10 @@ export default class Player {
 
 
     draw(ctx) {
+        // I was trying to get the sprites pixel perfect. I will probably go back later to do this.
+        // ctx.fillStyle = "black";
+        // ctx.fillRect(this.x, this.y, this.width, this.height)
+
         if (this.jumping) {
             if (this.jumpFrame <= 4) { 
                 this.drawFrame(ctx, this.jumpLoop[this.jumpFrame], 74, 27, 37)
@@ -210,19 +215,19 @@ export default class Player {
                 this.drawFrame(ctx, this.jumpLoop[this.jumpFrame], 111, 27, 37)
             }
         } else if (this.controller.right) { 
-            this.drawFrame(ctx, this.rightLoop[this.rightFrame], 37, 27, 37)
+            this.drawFrame(ctx, this.rightLoop[this.rightFrame], 43, 30, 31)
         } else if (this.controller.left) { 
-            this.drawFrame(ctx, this.leftLoop[this.leftFrame], 37, 27, 37)
+            this.drawFrame(ctx, this.leftLoop[this.leftFrame], 43, 30, 31)
         } else { 
-            this.drawFrame(ctx, this.idleLoop[this.idleFrame], 0, 27, 37);
+            this.drawFrame(ctx, this.idleLoop[this.idleFrame], 6, 30, 31);
         }
     }
 
 
 
-    drawFrame(ctx, frameX, frameY, canvasX, canvasY, x, y) { 
-        if (this.controller.left) {
-            ctx.drawImage(this.playerImg, frameX, frameY, canvasX, canvasY, this.x, this.y, this.width, this.height);
+    drawFrame(ctx, frameX, frameY, canvasX, canvasY) { 
+        if (this.facing === "left") {
+            ctx.drawImage(this.playerImgReversed, 355 - frameX, frameY, canvasX, canvasY, this.x, this.y, this.width, this.height);
         } else { 
             ctx.drawImage(this.playerImg, frameX, frameY, canvasX, canvasY, this.x, this.y, this.width, this.height);
         }
@@ -230,13 +235,13 @@ export default class Player {
 
 
 
-    attack(ctx) {
-        ctx.fillStyle = "black";
-        if (this.facing === "left") { 
-            ctx.fillRect(this.x, this.y, -20, this.height)
-        } else if (this.facing === "right") { 
-            ctx.fillRect(this.x + this.width, this.y, 20, this.height)
-        }
+    attack(ctx) { // Add this in later if I get to it
+        // ctx.fillStyle = "black";
+        // if (this.facing === "left") { 
+        //     ctx.fillRect(this.x, this.y, -20, this.height)
+        // } else if (this.facing === "right") { 
+        //     ctx.fillRect(this.x + this.width, this.y, 20, this.height)
+        // }
     }
 
 
@@ -267,6 +272,7 @@ export default class Player {
                 this.y = platform.y - this.height - 0.1; // Doing this made the collider work for when the player's right side hits the platforms left side. 
                 this.velocityY = 0; // Set the gravity to 0, or else it will look like the player is stuttering
                 this.jumping = false;
+                this.jumpFrame = 0; // The jumping animation will get stuck at 7 when I hold is down if I didn't put this.
             } else if (this.x <= platform.right && this.ol > platform.right) {
                 this.x = platform.right + 0.1;
                 this.velocityX = 0
