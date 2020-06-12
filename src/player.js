@@ -293,7 +293,7 @@ export default class Player {
                 // console.log("touching") 
             } else if (this.x <= platform.right && this.ol > platform.right) {
                 this.x = platform.right + 0.1;
-                this.velocityX = 0
+                this.velocityX = 0;
             } else if (this.right >= platform.x && this.or < platform.x) {
                 this.x = platform.x - this.width - 0.1; 
                 this.velocityX = 0;
