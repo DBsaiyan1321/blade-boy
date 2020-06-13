@@ -1,8 +1,11 @@
 import Player from "./player";
-import Level0 from "./levels/level_0"
-import Level1 from "./levels/level_1"
-import Level2 from "./levels/level_2"
-import Level3 from "./levels/level_3"
+import LevelFailed from "./levels/level_failed";
+import Level0 from "./levels/level_0";
+import Level1 from "./levels/level_1";
+import Level2 from "./levels/level_2";
+import Level3 from "./levels/level_3";
+// import Level4 from "./levels/level_4";
+import LevelComplete from "./levels/level_complete";
 
 export default class BladeBoy { 
     constructor(canvas, sound, muteButton) { 
@@ -19,10 +22,10 @@ export default class BladeBoy {
             this.musicHandler()
         })
         
-    
         this.player = new Player(this.height, this.width, this.ctx); 
-        this.levels = [new Level0(this.ctx), new Level1(this.ctx, this.player), new Level2(this.ctx, this.player), new Level3(this.ctx, this.player)];
-        this.currentLevel = 0
+        this.levels = [new LevelFailed(this.ctx), new Level0(this.ctx), new Level1(this.ctx, this.player), new Level2(this.ctx, this.player), new Level3(this.ctx, this.player), new LevelComplete(this.ctx, this.player)];
+        // this.currentLevel = 1;
+        this.currentLevel = 4;
 
         this.gameLoop = this.gameLoop.bind(this);
 
@@ -51,7 +54,8 @@ export default class BladeBoy {
         if (this.player.collidedWith(this.levels[this.currentLevel], this.levels[this.currentLevel].goal_dimensions) === true) { // Whenever I'm on the goal, it returns undefined for some reason 
             this.currentLevel++
             if (this.currentLevel === this.levels.length) { 
-                this.currentLevel = 0;
+                this.currentLevel = 1;
+                this.player.lives = 3;
             }
             this.player.x = this.levels[this.currentLevel].startingPosition.x;
             this.player.y = this.levels[this.currentLevel].startingPosition.y;
