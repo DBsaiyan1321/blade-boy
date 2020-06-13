@@ -24,7 +24,8 @@ export default class BladeBoy {
         
         this.player = new Player(this.height, this.width, this.ctx); 
         this.levels = [new LevelFailed(this.ctx), new Level0(this.ctx), new Level1(this.ctx, this.player), new Level2(this.ctx, this.player), new Level3(this.ctx, this.player), new LevelComplete(this.ctx, this.player)];
-        this.currentLevel = 1;
+        // this.currentLevel = 1;
+        this.currentLevel = 4;
 
         this.gameLoop = this.gameLoop.bind(this);
 

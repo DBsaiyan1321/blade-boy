@@ -30,7 +30,7 @@ export default class Level0 {
 
         this.platforms = [];
 
-        this.goal = { x: 850, y: 440, width: 20, height: 20 }
+        this.goal = { x: 825, y: 440, width: 20, height: 20 }
 
         this.goal_dimensions = {
             left: this.goal.x,
@@ -105,7 +105,7 @@ export default class Level0 {
         ctx.fillText('You Failed', 50, 170);
 
         ctx.font = '28px times new roman';
-        ctx.fillText('Try Again', 750, 420);
+        ctx.fillText('Try Again', 770, 420);
         // ctx.font = '50px Heebo'
         // ctx.fillStyle = "blue";
         // ctx.fillText('Directions:', 600, 90);
