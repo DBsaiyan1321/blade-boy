@@ -24,6 +24,8 @@ Game Goals:
 
 ## Implementation
 
+### Collision Detection
+This is a method on the ``` Player ``` class. How it works is that on every frame, it checks every single platform on the screen. First, it checks whether the player is even touching a platform. Then if it gets passed that first check, then it identifies which side the player is touching and what direction the character came from.  
 ```javascript
 collidedWith(platforms, goal) { 
    for (let i = 0; i < platforms.length; i++) { 
@@ -55,7 +57,8 @@ collidedWith(platforms, goal) {
 }
 ```
 
-
+### Levels
+This is the main code that makes the levels work. ```this.tiles ``` is the tilemap, and it indicates whether to render a platform at a specific spot, and what sprite to take from the sprite sheet. The x and y values indicate what sprite you want to take. If x is -1, then we don't want to render a platform at that spot. In the init function, this is where I make all of the ``` Platforms ```, which is what makes the platforms "solid". There is also a ``` draw ``` function that actually makes the platforms look good. 
 ```javascript 
 class Level { 
     constructor(ctx, player) {
@@ -100,3 +103,10 @@ class Level {
 * Timer
 * Obstacles
 * More Levels 
+
+#### Assets 
+* [Character](https://rvros.itch.io/animated-pixel-hero)
+* [Platforms](https://natancosta.itch.io/floating-ruins)
+* [Background](https://vnitti.itch.io/glacial-mountains-parallax-background)
+* [Soundtrack](https://nicolemariet.itch.io/spy-8-bit-16-bit)
+* [Coin](https://laredgames.itch.io/gems-coins-free)
