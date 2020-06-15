@@ -7,7 +7,7 @@ You are someone who just needs to pay rent, but you realized that you don't have
 
 ## Gameplay
 
-(Screenshot of game here) 
+![](assets/background_glacial_mountains.png)
 
 Controls: 
 * A or Left arrow to run left
