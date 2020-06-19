@@ -1,13 +1,13 @@
 ![Blade Boy](assets/title-screenshot.png)
 
+## Technologies 
+* JavaScript
+* HTML5 Canvas
+
 ## A JavaScript Platformer
 [Check It Out](https://dbsaiyan1321.github.io/blade-boy/)
 
 You are someone who just needs to pay rent, but you realized that you don't have any money because you spent it all on a cool outfit. You only have one way of getting money now... Going to the mountains and risking your life for gold coins to sell. That's the only chance you have. 
-
-## Technologies 
-* JavaScript
-* HTML5 Canvas
 
 ## Gameplay
 ![Blade Boy](assets/beginning-screenshot.png)
