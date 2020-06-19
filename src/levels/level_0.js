@@ -1,11 +1,8 @@
-import Platform from "../platform";
+import Level from "./level";
 
-export default class LevelFailed { 
+export default class Level0 extends Level { 
     constructor(ctx) {
-        this.rows = 20;
-        this.cols = 36;
-        this.tileSize = 25;
-        this.tiles = [
+        const tiles = [
             { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 },
             { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 },
             { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 }, { x: -1, y: 0 },
@@ -28,88 +25,17 @@ export default class LevelFailed {
             { x: 0, y: 0 }, { x: 8, y: 0 }, { x: 16, y: 0 }, { x: 24, y: 0 }, { x: 32, y: 0 }, { x: 40, y: 0 }, { x: 48, y: 0 }, { x: 56, y: 0 }, { x: 0, y: 0 }, { x: 8, y: 0 }, { x: 16, y: 0 }, { x: 24, y: 0 }, { x: 32, y: 0 }, { x: 40, y: 0 }, { x: 48, y: 0 }, { x: 56, y: 0 }, { x: 8, y: 0 }, { x: 16, y: 0 }, { x: 24, y: 0 }, { x: 32, y: 0 }, { x: 40, y: 0 }, { x: 48, y: 0 }, { x: 8, y: 0 }, { x: 16, y: 0 }, { x: 24, y: 0 }, { x: 32, y: 0 }, { x: 40, y: 0 }, { x: 48, y: 0 }, { x: 8, y: 0 }, { x: 16, y: 0 }, { x: 24, y: 0 }, { x: 32, y: 0 }, { x: 40, y: 0 }, { x: 48, y: 0 }, {x:32,y:0}, {x:56,y:0}
         ];
 
-        this.platforms = [];
+        const goal = { x: 850, y: 440, width: 20, height: 20 };
 
-        this.goal = { x: 850, y: 440, width: 20, height: 20 }
+        const startingPosition = { x: 20, y: 300 };
 
-        this.goal_dimensions = {
-            left: this.goal.x,
-            right: this.goal.x + this.goal.width,
-            top: this.goal.y,
-            bottom: this.goal.y + this.goal.height
-        }
-
-        this.goalLoop = [0, 16, 32, 48, 64]
-        this.goalFrame = 0;
-        this.goalFrameCount = 0;
-
-        this.startingPosition = { x: 20, y: 300 }
-
-        this.draw = this.draw.bind(this);
-        this.getTile = this.getTile.bind(this);
-        this.init = this.init.bind(this)
-
-        // Images
-        this.goalImg = new Image();
-        this.goalImg.src = "./assets/MonedaD.png";
-        
-        this.platformImg = new Image();
-        this.platformImg.src = "./assets/Tilemap.png";
-        this.platformImg.onload = () => {
-            this.init(ctx)
-        } 
-    }
-
-    init(ctx) {
-        for (let c = 0; c < this.cols; c++) {
-            for (let r = 0; r < this.rows; r++) {
-                let tile = this.getTile(c, r);
-                if (tile.x !== -1) { // 0 => empty tile
-                    this.platforms.push(new Platform(
-                        tile.x, // source x
-                        tile.y, // source y
-                        8, // source width
-                        8, // source height
-                        c * this.tileSize, // target x
-                        r * this.tileSize, // target y
-                        this.tileSize, // target width
-                        this.tileSize // target height
-                    ));
-                }
-            }
-        }
-
+        super(ctx, tiles, goal, startingPosition);
     }
 
     draw(ctx) { 
-        for (let i = 0; i < this.platforms.length; i++) {
-            let platform = this.platforms[i]
-            ctx.drawImage(this.platformImg, platform.spriteX, platform.spriteY, platform.spriteWidth, platform.spriteHeight, platform.x, platform.y, platform.width, platform.height)
-        }
-
-        ctx.drawImage(this.goalImg, this.goalLoop[this.goalFrame], 0, 16, 16, this.goal.x, this.goal.y, this.goal.width, this.goal.height)
-     
-        this.goalFrameCount++
-
-        if (this.goalFrameCount === 10) {
-            this.goalFrame++
-            this.goalFrameCount = 0;
-        }
-
-        if (this.goalFrame === 5) {
-            this.goalFrame = 0;
-        }
-
+        super.draw(ctx);
         ctx.fillStyle = "black";
         ctx.font = '140px Audiowide';
         ctx.fillText('Blade Boy', 50, 170);
-
-        // ctx.font = '50px Heebo'
-        // ctx.fillStyle = "blue";
-        // ctx.fillText('Directions:', 600, 90);
-    }
-
-    getTile(col, row) {
-        return this.tiles[row * this.cols + col] // The tiles are a 1D array, but it looks like a 2D array lol. 
     }
 }

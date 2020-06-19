@@ -39,11 +39,8 @@ export default class BladeBoy {
         let deltaTime = timeStamp - this.lastTime
         this.lastTime = timeStamp
         
-        // console.log(this.currentLevel)
         // this.ctx.clearRect(0, 0, this.dimensions.width, this.dimensions.height); // For some reason this isn't needed
         this.drawBackground(this.ctx)
-
-        // this.player.loop(this.ctx, this.levels[this.currentLevel].platforms, this.levels[this.currentLevel].goal_dimensions)
 
         if (this.player.loop(this.ctx, this.levels[this.currentLevel].platforms, this.levels[this.currentLevel].goal_dimensions) === true) {
             this.player.x = this.levels[this.currentLevel].startingPosition.x;
